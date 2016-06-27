@@ -1,0 +1,15 @@
+var mongoose     = require('mongoose');
+var Schema       = mongoose.Schema;
+
+var contactSchema   = new Schema({
+    name: String,
+    email: String,
+    phone: Number
+});
+
+var contact = mongoose.model('contact', contactSchema);
+
+module.exports = {
+  Contact: contact
+};
+//module.exports = mongoose.model('Contact', ContactSchema);

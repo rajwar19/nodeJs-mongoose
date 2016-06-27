@@ -1,0 +1,14 @@
+{
+  "name": "node-mongoose-api",
+  "main": "server.js",
+  "description": "node js with mongoose api",
+  "dependencies": {
+    "body-parser": "~1.0.1",
+    "express": "~4.0.0",
+    "mongodb":"2.1.18",
+    "mongoose": "~2.7.x"
+  },
+  "repository": "",
+  "licence": "KELLTON",
+  "version": "1.0.0"
+}
