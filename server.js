@@ -26,6 +26,8 @@ router.get('/', function(req, res) {
 
 router.route('/contacts').get(contactController.all);
 router.route('/contacts').post(contactController.add);
+router.route('/contacts').delete(contactController.del);
+router.route('/contacts').put(contactController.update);
 
 
 
