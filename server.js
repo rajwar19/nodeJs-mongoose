@@ -9,22 +9,27 @@ mongoose.connect('mongodb://127.0.0.1:27017/nodedb');
 
 var app = express();
 app.use(express.static(__dirname+'/app'));
+app.use(express.static(__dirname+'/public'));
 
 var bodyParser = require('body-parser'); // Body parser for fetch posted data
-app.use(bodyParser.urlencoded({ extended: false }))  
 
+//use bodyParser() to let us get the data from a POST
+app.use(bodyParser.urlencoded({ extended: false }))  
+app.use(bodyParser.json());
 
 var Contact = require('./app/models/contact.js').Contact;
 var contactController = require('./app/controller/contactController.js')(Contact);
 
 
 router.get('/', function(req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });   
+	  res.sendFile(path.join(__dirname + '/public/index.html'));
+    //res.json({ message: 'hooray! welcome to our api!' });   
 });
 
 
 
 router.route('/contacts').get(contactController.all);
+router.route('/contactById').get(contactController.select);
 router.route('/contacts').post(contactController.add);
 router.route('/contacts').delete(contactController.del);
 router.route('/contacts').put(contactController.update);
