@@ -1,6 +1,6 @@
 var contactController = function(Contact){
 	var all = function(req, res) {
-	  Contact.find({}, function(err, contacts) {
+	  Contact.find({userId: req.user._id}, function(err, contacts) {
 	    if(!err) {
 	      //res.json(200, { contacts: contacts }); // response for api
 	      res.json(contacts);
@@ -12,9 +12,8 @@ var contactController = function(Contact){
 	
 	
 		var select = function(req, res) {
-		   var id=req.query.id;
-      	   Contact.findById(id,function(err,data){
-			//console.log(data);return false;
+	   var id=req.query.id;
+		Contact.find({ userId: req.user._id, _id:id }, function(err, data) {	   
 			if(!err) {
 				res.json(data);
 			} else {
@@ -25,12 +24,13 @@ var contactController = function(Contact){
 	
 	var add = function(req, res) {
 		var contact = req.body;
-		Contact.findOne({ 'name': req.body.name },'name',function (err, existing_contact) {
+		Contact.findOne({ userId: req.user._id, name: req.body.name },'name',function (err, existing_contact) {
 			if(!existing_contact && !err)	{
 				var modelContact = new Contact(); 
 				modelContact.name=contact.name;
 				modelContact.email=contact.email;
 				modelContact.phone=contact.phone;
+				modelContact.userId = req.user._id;
 
 			modelContact.save(function (err, data) {
 				if(!err) {
@@ -54,7 +54,7 @@ var contactController = function(Contact){
 			var id=req.body.id;	
 			}
 			//console.log(id);return false;
-			Contact.remove({'_id':id}, function(err,removed) {
+			Contact.remove({userId: req.user._id, _id:id}, function(err,removed) {
 			if(!err && removed){
 			  res.json(200, { message: "Contact has been deleted " });  
 			}else if(!err && !removed){
@@ -67,10 +67,11 @@ var contactController = function(Contact){
 		
 		var update = function(req, res) {
 			var id=req.body.id;
+			//console.log(id);
 			var newdata={name:req.body.name,email:req.body.email,phone:req.body.phone};
-		    Contact.findById(id,function(err,data){
+		    Contact.findOne({ userId: req.user._id, _id: id },function(err,data){
 			  if(!err && data){
-				Contact.update({'_id':id},newdata,function(err,affected) {
+				Contact.update({userId: req.user._id, _id:id},newdata,function(err,affected) {
 						if(!err && affected){
 						 res.json(200, { message: "Contact updated sucessfully" });
 						}else{
