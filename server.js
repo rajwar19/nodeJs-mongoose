@@ -41,12 +41,12 @@ router.get('/', function(req, res) {
 
 router.route('/users').post(userController.postUsers);
 router.route('/users').get(authController.isAuthenticated,userController.getUsers);
-// Create endpoint handlers for oauth2 authorize  // http://localhost:8080/oauth2/authorize/client_id=0123456789&redirect_uri=http://localhost:8080&response_type=code
+// Create endpoint handlers for oauth2 authorize  // http://localhost:8080/api/oauth2/authorize/client_id=0123456789&redirect_uri=http://localhost:8080&response_type=code
 router.route('/oauth2/authorize')
   .get(authController.isAuthenticated, oauth2Controller.authorization)
   .post(authController.isAuthenticated, oauth2Controller.decision);
 
-// Create endpoint handlers for oauth2 token  http://localhost:8080/api/oauth2/token
+// Create endpoint handlers for oauth2 token  http://localhost:8080/api/oauth2/token     //code=,grant_type=authorization_code,redirect_uri=http://localhost:8080
 router.route('/oauth2/token').post(authController.isClientAuthenticated, oauth2Controller.token); 
 
 // Create endpoint handlers for /clients 
